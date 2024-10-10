@@ -1,6 +1,6 @@
 <template>
     <header class="header" :class="{ 'dark-theme': isDarkTheme }">
-      <div class="logo-search">
+      <el-row class="logo-search">
         <div class="logo">
           <img src="../assets/logo.svg" alt="Logo" />
         </div>
@@ -8,7 +8,7 @@
           <img src="../assets/search.svg" alt="Search" />
           <input type="text" placeholder="Search..." readonly />
         </div>
-      </div>
+      </el-row>
     
       <div class="user-actions">
       <button @click="toggleTheme" class="theme-toggle">
@@ -29,16 +29,18 @@
       </button>
       <div class="language-select">
         <select>
-          <option value="en">
-            <img src="../assets/icon/lang.png" alt="Language" />
-            Español
-          </option>
+          <option value="en">English</option>
+          <option value="vn">Vietnamese</option>
         </select>
       </div>
-        <div class="user-avatar" style="border-radius: 100%;">
+        <div class="user-avatar">
+          <img src="../assets/avatar/avatar.jpg" alt="User Avatar" />
+          <div class="avatar-options">
+            <div v-if="!isLoggedIn" class="option" @click="openLoginPopup"><i class="icon-heart"></i> Login</div>
+            <div class="option"><i class="icon-star"></i> Oddo</div>
+            <div class="option"><i class="icon-history">Market</i> </div>
+          </div>
         </div>
-      <!-- <button @click="openLoginPopup">Login</button>
-      <button>Sign Up</button> -->
     </div>
     </header>
     <div v-if="isSearchPopupOpen" class="search-popup">
@@ -47,19 +49,21 @@
         <button @click="closeSearchPopup">Close</button>
       </div>
     </div>
-    <Login v-if="isLoginPopupOpen" @close="closeLoginPopup" />
+    <Login v-if="showLoginPopup" @close="closeLoginPopup" />
   </template>
   
   <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useTheme } from '../theme/useTheme';
-// import  Login  from '../views/Login.vue';
+import Login from '../views/login/Login.vue';
 
 const isSearchPopupOpen = ref(false);
-const isLoginPopupOpen = ref(false);
+const showLoginPopup = ref(false);
 const popupSearchInput = ref<HTMLInputElement | null>(null);
 const { isDarkTheme, toggleTheme } = useTheme();
 const emit = defineEmits(['login-success']);
+const isLoggedIn = ref(false); // New reactive variable to track login status
+
 const openSearchPopup = () => {
   isSearchPopupOpen.value = true;
   setTimeout(() => {
@@ -71,14 +75,12 @@ const closeSearchPopup = () => {
   isSearchPopupOpen.value = false;
 };
 const openLoginPopup = () => {
-  isLoginPopupOpen.value = true;
+  showLoginPopup.value = true;
 };
 
-const closeLoginPopup = (success: boolean) => {
-  isLoginPopupOpen.value = false;
-  if (success) {
-    emit('login-success');
-  }
+const closeLoginPopup = () => {
+  showLoginPopup.value = false;
+  isLoggedIn.value = true; // Set logged in status to true after successful login
 };
 
 onMounted(() => {
@@ -262,13 +264,57 @@ onMounted(() => {
   color: #ffffff;
 }
 .user-avatar {
-  width: 30px;
-  height: 30px;
-  background-image: url('../assets/avatar/avatar.jpg');
-  background-size: cover;
-  background-position: center;
-  border-color: aqua;
-  margin-left: 15px;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: visible;
+  cursor: pointer;
+  border: 2px solid green;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100%;
+}
+.avatar-options {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: -10px;
+  background-color: #928e8e; /* Changed to black */
+  border-radius: 14px;
+  padding: 8px 0;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(255, 0, 212, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.user-avatar:hover .avatar-options {
+  opacity: 1;
+  visibility: visible;
+}
+
+.option {
+    border-radius: 10px;
+    padding: 8px 16px;
+    color: #fff; /* Text color remains white */
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+    margin: 12px; /* Added margin-left of 8px */
+}
+
+.option:hover {
+  background-color: #3a3a3a;
+}
+
+.option i {
+  margin-right: 8px;
+  font-size: 18px;
 }
 .language-select {
   position: relative;
@@ -276,13 +322,12 @@ onMounted(() => {
 }
 
 .language-select select {
-  appearance: none;
   background-color: transparent;
   border: none;
   padding: 0 20px 0 30px;
   margin: 0;
   width: 100%;
-  font-family: inherit;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   cursor: pointer;
   line-height: 1.5;
@@ -292,26 +337,26 @@ onMounted(() => {
 .language-select::before {
   content: '';
   position: absolute;
-  left: 5px;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background-image: url('../assets/icon/lang.png');
   background-size: contain;
   background-repeat: no-repeat;
+  
 }
-
-.language-select::after {
-  content: '\25BC';
-  position: absolute;
-  top: 50%;
-  right: 5px;
-  transform: translateY(-50%);
-  pointer-events: none;
+.language-select::after{
+margin-right: 80px;
 }
 
 .dark-theme .language-select select {
-  color: #ffffff;
+  color: #79d9ff;
 }
+.icon-heart::before { content: '❤️'; }
+.icon-star::before { content: '⭐'; }
+.icon-history::before { content: '🕒'; }
+.icon-replay::before { content: '🔁'; }
+.icon-video::before { content: '🎥'; }
+.icon-order::before { content: '📋'; }
   </style>
