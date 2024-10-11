@@ -1,0 +1,28 @@
+{
+    "sidebar": {
+      "dashboard_label": "Bảng điều khiển",
+      "settings_group_label": {
+        "label": "Cài đặt",
+        "menus": {
+          "personal_label": "Thông tin cá nhân",
+          "security_label": "Bảo mật"
+        }
+      },
+      "sign_out_label": "Đăng xuất"
+    },
+    "navbar": {
+      "dashboard_label": "Bảng điều khiển",
+      "account_label": "Tài khoản"
+    },
+    "office": {
+      "home": "Trang chủ",
+      "excel": "Excel",
+      "ppt": "PPT",
+      "docx": "Docx",
+      "menu_item": "Menu con {number}"
+    },
+    "languages": {
+      "english": "Tiếng Anh",
+      "vietnamese": "Tiếng Việt"
+    }
+  }

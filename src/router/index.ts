@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../components/Home.vue'
 import Login from '../views/login/Login.vue'
 import Greet from '../components/Greet.vue'
-import Office from '../views/office/Office.vue'
+import officeRoutes from './office'
 
 const routes = [
   {
@@ -21,10 +21,11 @@ const routes = [
     component: Greet
   },
   {
-    path: '/office',
-    name: 'Office',
-    component: Office
-  }
+    path: '/design',
+    name: 'Design',
+    component: () => import("../views/design/Design.vue")
+  },
+  ...officeRoutes
 ]
 
 const router = createRouter({

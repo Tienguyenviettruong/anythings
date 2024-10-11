@@ -48,8 +48,8 @@ const features = [
   },
   {
     icon: Download,
-    title: 'Resource',
-    description: 'Download relevant design resources for shaping page prototype or visual draft'
+    title: 'Design',
+    description: 'Design form and components'
   }
 ]
 
@@ -59,11 +59,21 @@ for (let i = 0; i < features.length; i += 3) {
 }
 
 const viewDetail = (title: string) => {
-  if (title === 'Office') {
-    router.push('/office');
-  } else {
-    console.log(`View detail clicked for ${title}`);
-    // Implement navigation for other titles here
+  switch (title) {
+    case 'Office':
+      router.push('/office');
+      break;
+    case 'Component':
+      router.push('/component');
+      break;
+    case 'Design':
+      router.push('/design');
+      break;
+    case 'Guide':
+      router.push('/guide');
+      break;
+    default:
+      console.log(`Không có trang tương ứng cho ${title}`);
   }
 }
 </script>

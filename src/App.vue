@@ -22,6 +22,6 @@ const setActiveTab = (tab: string) => {
 .app {
   font-family: Arial, sans-serif;
   color: #333;
-  padding-top: 60px; /* Add padding to account for fixed header */
+  padding-top: 80px; /* Add padding to account for fixed header */
 }
 </style>

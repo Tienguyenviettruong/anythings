@@ -28,17 +28,18 @@
         </svg>
       </button>
       <div class="language-select">
-        <select>
-          <option value="en">English</option>
-          <option value="vn">Vietnamese</option>
-        </select>
-      </div>
+  <select v-model="$i18n.locale">
+    <option value="en">{{ $t('languages.english') }}</option>
+    <option value="vi">{{ $t('languages.vietnamese') }}</option>
+  </select>
+</div>
         <div class="user-avatar">
           <img src="../assets/avatar/avatar.jpg" alt="User Avatar" />
           <div class="avatar-options">
-            <div v-if="!isLoggedIn" class="option" @click="openLoginPopup"><i class="icon-heart"></i> Login</div>
+            <div v-if="isLoggedIn" class="option" @click="logout"><i class="icon-heart"></i> Logout</div>
+            <div v-else class="option" @click="openLoginPopup"><i class="icon-heart"></i> Login</div>
             <div class="option"><i class="icon-star"></i> Oddo</div>
-            <div class="option"><i class="icon-history">Market</i> </div>
+            <div class="option"><i class="icon-history"></i> Market</div>
           </div>
         </div>
     </div>
@@ -49,20 +50,25 @@
         <button @click="closeSearchPopup">Close</button>
       </div>
     </div>
-    <Login v-if="showLoginPopup" @close="closeLoginPopup" />
+    <Login v-if="showLoginPopup" @close="closeLoginPopup" @login-success="handleLoginSuccess" />
   </template>
   
   <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useTheme } from '../theme/useTheme';
 import Login from '../views/login/Login.vue';
-
+import { useRouter } from 'vue-router';
 const isSearchPopupOpen = ref(false);
 const showLoginPopup = ref(false);
 const popupSearchInput = ref<HTMLInputElement | null>(null);
 const { isDarkTheme, toggleTheme } = useTheme();
-const emit = defineEmits(['login-success']);
-const isLoggedIn = ref(false); // New reactive variable to track login status
+const emit = defineEmits(['login-success', 'logout']);
+const isLoggedIn = ref(false);
+
+onMounted(() => {
+  const loggedInStatus = localStorage.getItem('isLoggedIn');
+  isLoggedIn.value = loggedInStatus === 'true';
+});
 
 const openSearchPopup = () => {
   isSearchPopupOpen.value = true;
@@ -80,8 +86,23 @@ const openLoginPopup = () => {
 
 const closeLoginPopup = () => {
   showLoginPopup.value = false;
-  isLoggedIn.value = true; // Set logged in status to true after successful login
 };
+
+  
+  const router = useRouter();
+const logout = () => {
+  localStorage.removeItem('isLoggedIn');
+  isLoggedIn.value = false;
+  emit('logout');
+  router.push('/');
+};
+
+watch(() => localStorage.getItem('isLoggedIn'), (newValue) => {
+  isLoggedIn.value = newValue === 'true';
+  if (isLoggedIn.value) {
+    emit('login-success');
+  }
+});
 
 onMounted(() => {
   window.addEventListener('keydown', (e) => {
@@ -91,6 +112,11 @@ onMounted(() => {
     }
   });
 });
+
+const handleLoginSuccess = () => {
+  isLoggedIn.value = true;
+  showLoginPopup.value = false;
+};
 </script>
   
   <style scoped>

@@ -18,5 +18,6 @@ import { ElFooter } from 'element-plus'
   color: black;
   padding: 10px;
   text-align: center;
+  margin-left: 10px;
 }
 </style>

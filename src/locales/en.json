@@ -4,7 +4,7 @@
       "settings_group_label": {
         "label": "Settings",
         "menus": {
-          "personnal_label": "Informations",
+          "personal_label": "Personal Information",
           "security_label": "Security"
         }
       },
@@ -192,5 +192,18 @@
           }
         }
       }
+    },
+ 
+    "office": {
+      "home": "Home",
+      "excel": "Excel",
+      "ppt": "PPT",
+      "docx": "Docx",
+      "menu_item": "Menu item {number}"
+    }, 
+  
+    "languages": {
+      "english": "English",
+      "vietnamese": "Vietnamese"
     }
   }

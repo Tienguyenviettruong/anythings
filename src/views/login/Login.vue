@@ -35,7 +35,7 @@
     password: ''
   });
   
-  const emit = defineEmits(['close']);
+  const emit = defineEmits(['close', 'login-success']);
   
   const handleClose = () => {
     dialogVisible.value = false;
@@ -47,6 +47,8 @@
       const result = await invoke('login', { username: form.username, password: form.password });
       if (result === true) {
         ElMessage.success('Login successful');
+        localStorage.setItem('isLoggedIn', 'true');
+        emit('login-success');
         handleClose();
         router.push('/greet');
       } else {
