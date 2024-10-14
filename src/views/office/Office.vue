@@ -4,7 +4,7 @@
       <el-col :span="isCollapse ? 1 : 4" class="sidebar-col">
         <div class="sidebar-content">
           <div class="logo-container" :class="{ 'collapsed': isCollapse }">
-            <img src="/src/assets/logo.png" alt="Logo" class="logo" />
+            <img src="/src/assets/icon/office_icon.png" alt="Logo" class="logo" />
           </div>
           <el-menu
             :default-active="activeIndex"
@@ -17,16 +17,12 @@
               <template #title>{{ $t('office.home') }}</template>
             </el-menu-item>
             <el-menu-item index="2" @click="$router.push('/office/excel')">
-              <template #title>
-                <el-icon><Connection /></el-icon>
-                <span>{{ $t('office.excel') }}</span>
-              </template>
+              <el-icon><Connection /></el-icon>
+              <template #title>{{ $t('office.excel') }}</template>
             </el-menu-item>
             <el-menu-item index="3" @click="$router.push('/office/ppt')">
-              <template #title>
-                <el-icon><Calendar /></el-icon>
-                <span>{{ $t('office.ppt') }}</span>
-              </template>
+              <el-icon><Calendar /></el-icon>
+              <template #title>{{ $t('office.ppt') }}</template>
             </el-menu-item>
             <el-sub-menu index="4">
               <template #title>
@@ -59,6 +55,7 @@ import { HomeFilled, Connection, Calendar, Menu, Expand, Fold } from '@element-p
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+console.log(t)
 const isCollapse = ref(true)
 const activeIndex = ref('1')
 
@@ -157,12 +154,19 @@ const toggleCollapse = () => {
   width: 200px;
 }
 
-.el-menu--collapse .el-sub-menu__title span,
-.el-menu--collapse .el-menu-item span {
+.el-menu--collapse .el-sub-menu__title span {
   display: none;
 }
 
 .el-menu--collapse .el-sub-menu__icon-arrow {
   display: none;
+}
+
+.el-menu--collapse .el-menu-item .el-icon,
+.el-menu--collapse .el-sub-menu__title .el-icon {
+  margin: 0;
+  vertical-align: middle;
+  width: 24px;
+  text-align: center;
 }
 </style>

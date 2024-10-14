@@ -1,15 +1,15 @@
 <template>
-  <div class="feature-grid">
-    <div class="feature-row" v-for="row in featureRows" :key="row[0].title">
-      <div class="feature-card" v-for="feature in row" :key="feature.title">
-        <div class="icon-container">
-          <el-icon :size="50" :color="'#409EFF'">
-            <component :is="feature.icon"></component>
-          </el-icon>
-        </div>
-        <h2>{{ feature.title }}</h2>
-        <p>{{ feature.description }}</p>
-        <el-button type="primary" plain @click="viewDetail(feature.title)">View Detail</el-button>
+  <div class="feature-circle">
+    <div
+      v-for="(feature, index) in features"
+      :key="feature.title"
+      class="feature-item"
+      :style="getPosition(index)"
+    >
+      <div class="icon-container" @click="viewDetail(feature.title)" :title="feature.description">
+        <el-icon :size="50" :color="'#409EFF'">
+          <component :is="feature.icon"></component>
+        </el-icon>
       </div>
     </div>
   </div>
@@ -18,6 +18,7 @@
 <script setup lang="ts">
 import { OfficeBuilding, Tickets, Download, Folder } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 
 const router = useRouter();
 
@@ -36,7 +37,8 @@ const features = [
     icon: Download,
     title: 'Resource',
     description: 'Download relevant design resources for shaping page prototype or visual draft'
-  },{
+  },
+  {
     icon: Folder,
     title: 'Guide',
     description: 'Understand the design guidelines'
@@ -51,12 +53,17 @@ const features = [
     title: 'Design',
     description: 'Design form and components'
   }
-]
+];
 
-const featureRows: any[] = []
-for (let i = 0; i < features.length; i += 3) {
-  featureRows.push(features.slice(i, i + 3))
-}
+const getPosition = (index: number) => {
+  const angle = (index / features.length) * 2 * Math.PI;
+  const radius = 150; // Adjust this value to change the circle size
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+  return {
+    transform: `translate(${x}px, ${y}px)`,
+  };
+};
 
 const viewDetail = (title: string) => {
   switch (title) {
@@ -75,56 +82,38 @@ const viewDetail = (title: string) => {
     default:
       console.log(`Không có trang tương ứng cho ${title}`);
   }
-}
+};
 </script>
 
 <style scoped>
-.feature-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Tăng khoảng cách giãn giữa các card */
-  padding: 10px;
-  align-items: center;
-  margin-top: 5%;
+.feature-circle {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin: auto;
 }
 
-.feature-row {
-  display: flex;
-  justify-content: center;
-  gap: 20px; /* Tăng khoảng cách giãn giữa các card */
-}
-
-.feature-card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 10px;
-  width: calc(16.666% - 20px); /* Giảm kích cỡ thẻ xuống một nửa */
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Căn giữa theo chiều dọc */
+.feature-circle .feature-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .icon-container {
   background-color: #ecf5ff;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-h2 {
-  margin-bottom: 5px;
-  color: #303133;
-}
-
-p {
-  color: #606266;
-  margin-bottom: 10px;
+.icon-container:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>

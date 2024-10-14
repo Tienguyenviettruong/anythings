@@ -44,24 +44,24 @@
       </pre>
       <p>You'll now see a new window open with your app running.</p>
       <p>Congratulations! You've made your Tauri app! 🚀</p>
-      <Greet />
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import Greet from "../components/Greet.vue";
 </script>
 
 <style scoped>
 .home {
-  font-family: Arial, sans-serif;
+  font-family: 'Times New Roman', Times, serif, sans-serif;
   color: #333;
+  padding-bottom: 60px
 }
 
 .container {
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin-left: 5%;
+  margin-right: 5%;
   padding: 20px;
 }
 
