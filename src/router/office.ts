@@ -6,7 +6,12 @@ const officeRoutes: RouteRecordRaw[] = [
     name: 'Office',
     component: () => import('../views/office/Office.vue'),
     children: [
-      {
+        {
+            path: 'officehome',
+            name: 'Office Home',
+            component: () => import('../views/office/HomeOffice.vue')
+        },
+        {
         path: 'excel',
         name: 'Excel',
         component: () => import('../views/office/Excel.vue')
@@ -14,12 +19,12 @@ const officeRoutes: RouteRecordRaw[] = [
       {
         path: 'ppt',
         name: 'PowerPoint',
-        component: () => import('../views/office/PPT.vue')
-    //   },
-    //   {
-    //     path: 'docx',
-    //     name: 'Word',
-    //     component: () => import('../views/office/Word.vue')
+        component: () => import('../views/office/PPT.vue'),
+        meta: {
+          icon: "ri:file-ppt-2-line",
+          title: "PPT",
+          keepAlive: true,
+        }
       }
     ]
   }

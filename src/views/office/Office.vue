@@ -1,5 +1,5 @@
 <template>
-  <div class="office-container">
+  <div class="office-container" :class="{ 'dark-theme': isDarkTheme }">
     <el-row class="full-height">
       <el-col :span="isCollapse ? 1 : 4" class="sidebar-col">
         <div class="sidebar-content">
@@ -12,21 +12,22 @@
             :collapse="isCollapse"
             @select="handleSelect"
           >
-            <el-menu-item index="1">
-              <el-icon><HomeFilled /></el-icon>
+            <el-menu-item index="1" @click="$router.push('/office/officehome')">
+              <img src="/src/assets/icon/home-icon.png" alt="Excel" class="menu-icon" />
               <template #title>{{ $t('office.home') }}</template>
             </el-menu-item>
             <el-menu-item index="2" @click="$router.push('/office/excel')">
-              <el-icon><Connection /></el-icon>
+              <!-- <el-icon><Connection /></el-icon> -->
+              <img src="/src/assets/icon/excel-icon.png" alt="Excel" class="menu-icon" />
               <template #title>{{ $t('office.excel') }}</template>
             </el-menu-item>
             <el-menu-item index="3" @click="$router.push('/office/ppt')">
-              <el-icon><Calendar /></el-icon>
+              <img src="/src/assets/icon/ppt-icon.png" alt="Excel" class="menu-icon" />
               <template #title>{{ $t('office.ppt') }}</template>
             </el-menu-item>
             <el-sub-menu index="4">
               <template #title>
-                <el-icon><Menu /></el-icon>
+                <img src="/src/assets/icon/docx-icon.png" alt="Excel" class="menu-icon" />
                 <span>{{ $t('office.docx') }}</span>
               </template>
               <el-menu-item v-for="i in 8" :key="i" :index="`4-${i}`">
@@ -53,8 +54,11 @@
 import { ref } from 'vue'
 import { HomeFilled, Connection, Calendar, Menu, Expand, Fold } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
+import { useTheme } from '../../theme/useTheme'
 
 const { t } = useI18n()
+const { isDarkTheme } = useTheme()
+
 console.log(t)
 const isCollapse = ref(true)
 const activeIndex = ref('1')
@@ -74,8 +78,8 @@ const toggleCollapse = () => {
   /* min-height: calc(100vh - 60px); */
 }
 
-.full-height {
-  height: calc(100vh - 148px);
+.office-container .full-height {
+  height: calc(100vh - 150px);
   display: flex;
 }
 
@@ -85,11 +89,12 @@ const toggleCollapse = () => {
   display: flex;
   flex-direction: column;
   max-width: 10%;
+  border-right: 1px solid #e6e6e6; 
 }
 
 .sidebar-content {
   flex-grow: 1;
-  overflow-y: auto;
+  /* overflow-y: auto; */
   display: flex;
   flex-direction: column;
 }
@@ -123,6 +128,7 @@ const toggleCollapse = () => {
   height: 100%;
   transition: width 0.3s;
   flex-grow: 1;
+  padding-left: 20px;
 }
 
 .el-menu-vertical {
@@ -130,11 +136,13 @@ const toggleCollapse = () => {
   height: 100%;
 }
 
-.content-area {
-  padding: 20px;
+.office-container .content-area {
+  /* padding: 20px; */
   background-color: #f5f7fa;
   height: 100%;
   overflow-y: auto;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
 }
 
 .collapse-toggle {
@@ -151,7 +159,7 @@ const toggleCollapse = () => {
 }
 
 .el-menu-vertical:not(.el-menu--collapse) {
-  width: 200px;
+  max-width: 10%;
 }
 
 .el-menu--collapse .el-sub-menu__title span {
@@ -169,4 +177,44 @@ const toggleCollapse = () => {
   width: 24px;
   text-align: center;
 }
+.dark-theme {
+  background-color: #130b3f;
+  color: #ffffff;
+}
+
+.dark-theme .sidebar-col,
+.dark-theme .logo-container,
+.dark-theme .el-menu {
+  background-color: #212052;
+  color: #ffffff;
+  border-color: #444;
+}
+
+.dark-theme .content-area {
+  background-color: #333;
+}
+
+.dark-theme .collapse-toggle {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.dark-theme .collapse-toggle:hover {
+  background-color: #444;
+}
+.menu-icon {
+  margin-right: 10px;
+}
+
+.el-menu-item,
+.el-sub-menu__title {
+  display: flex;
+  align-items: center;
+}
+
+.el-menu-item .el-icon,
+.el-sub-menu__title .el-icon {
+  margin-right: 10px;
+}
+
 </style>

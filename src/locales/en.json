@@ -205,5 +205,9 @@
     "languages": {
       "english": "English",
       "vietnamese": "Vietnamese"
+    },
+    "ppt": {
+      "title": "PPT",
+      "description": "PPT"
     }
   }
